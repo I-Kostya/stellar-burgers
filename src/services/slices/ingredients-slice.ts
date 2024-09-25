@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TIngredient } from '../../utils/types';
 import { getIngredientsApi } from '../../utils/burger-api';
 
-export const getIngredients = createAsyncThunk(
+export const getIngredientsThunk = createAsyncThunk(
   'ingredients/getAll',
   getIngredientsApi
 );
@@ -16,7 +16,7 @@ type TIngredientsState = {
   error: string | null;
 };
 
-export const initialState: TIngredientsState = {
+const initialState: TIngredientsState = {
   ingredients: [],
   buns: [],
   mains: [],
@@ -34,11 +34,11 @@ const ingredientsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getIngredients.pending, (state) => {
+      .addCase(getIngredientsThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getIngredients.rejected, (state, action) => {
+      .addCase(getIngredientsThunk.rejected, (state, action) => {
         state.loading = false;
         if (action.error.message) {
           state.error = action.error.message;
@@ -46,7 +46,7 @@ const ingredientsSlice = createSlice({
           state.error = null;
         }
       })
-      .addCase(getIngredients.fulfilled, (state, action) => {
+      .addCase(getIngredientsThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.ingredients = action.payload;
         if (action.payload) {
