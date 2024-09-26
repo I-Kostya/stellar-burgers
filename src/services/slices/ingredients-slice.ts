@@ -8,7 +8,6 @@ export const getIngredientsThunk = createAsyncThunk(
 );
 
 type TIngredientsState = {
-  ingredients: TIngredient[];
   buns: TIngredient[];
   mains: TIngredient[];
   sauces: TIngredient[];
@@ -17,11 +16,10 @@ type TIngredientsState = {
 };
 
 const initialState: TIngredientsState = {
-  ingredients: [],
   buns: [],
   mains: [],
   sauces: [],
-  loading: false,
+  loading: true,
   error: null
 };
 
@@ -48,7 +46,6 @@ const ingredientsSlice = createSlice({
       })
       .addCase(getIngredientsThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.ingredients = action.payload;
         if (action.payload) {
           state.buns = action.payload.filter((ing) => ing.type === 'bun');
           state.mains = action.payload.filter((ing) => ing.type === 'main');
